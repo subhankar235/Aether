@@ -30,9 +30,18 @@
   <img src="https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white" alt="pnpm"/>
 </p>
 
-Aether is an AI-native, multi-agent executive assistant platform that watches your inbox, triages incoming mail, drafts context-aware replies, schedules meetings, researches companies, and manages business workflows — all through a unified voice or text command interface. Every consequential action is gated behind explicit human approval.
+> Aether is an AI-native, multi-agent executive assistant platform that watches your inbox, triages incoming mail, drafts context-aware replies, schedules meetings, researches companies, and manages business workflows — all through a unified voice or text command interface. Every consequential action is gated behind explicit human approval.
 
 Built for knowledge workers, founders, sales teams, and executive assistants who want the speed of AI automation without losing control.
+
+<p align="center">
+  <a href="apps/api/README.md">
+    <img src="https://img.shields.io/badge/📖_API_Docs-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="API Docs"/>
+  </a>
+  <a href="apps/web/README.md">
+    <img src="https://img.shields.io/badge/🌐_Web_Docs-000000?style=for-the-badge&logo=next.js&logoColor=white" alt="Web Docs"/>
+  </a>
+</p>
 
 ---
 

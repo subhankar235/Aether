@@ -18,7 +18,7 @@
   The AI-native command centre for your inbox. Voice or text, one unified interface — seven specialised agents, one supervisor.
 </p>
 
-> **Part of the Aether monorepo.** Backend lives at [`apps/api`](../api/README.md). Chrome extension at [`apps/extension`](../extension/).
+> **Part of the Aether monorepo.** Backend lives at [`apps/api`](../api/README.md). Chrome extension at [`apps/extension`](../extension/README.md).
 
 ---
 
