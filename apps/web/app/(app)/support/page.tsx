@@ -1,14 +1,6 @@
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { tickets } from "@/lib/mock-data";
+import { Card, Badge } from '@aetheros/ui'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@aetheros/ui'
+import { tickets } from '@/lib/mock-data'
 
 export default function SupportPage() {
   return (
@@ -41,7 +33,7 @@ export default function SupportPage() {
                 </TableCell>
                 <TableCell>
                   <Badge
-                    variant={t.status === "resolved" ? "secondary" : "default"}
+                    variant={t.status === 'resolved' ? 'secondary' : 'default'}
                     className="capitalize"
                   >
                     {t.status}
@@ -54,5 +46,5 @@ export default function SupportPage() {
         </Table>
       </Card>
     </div>
-  );
+  )
 }

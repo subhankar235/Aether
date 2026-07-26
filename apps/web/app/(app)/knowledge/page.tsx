@@ -1,9 +1,7 @@
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { knowledgeDocs } from "@/lib/mock-data";
-import { BookOpen, Upload, Search } from "lucide-react";
+import { Card, Badge, Button, Input } from '@aetheros/ui'
+
+import { knowledgeDocs } from '@/lib/mock-data'
+import { BookOpen, Upload, Search } from 'lucide-react'
 
 export default function KnowledgePage() {
   return (
@@ -27,8 +25,8 @@ export default function KnowledgePage() {
           <Button>Ask</Button>
         </div>
         <div className="mt-3 rounded-md border border-primary/30 bg-primary/5 p-3 text-sm">
-          <span className="text-primary">Aether:</span> Ready to answer from{" "}
-          {knowledgeDocs.reduce((a, d) => a + d.chunks, 0)} indexed chunks across{" "}
+          <span className="text-primary">Aether:</span> Ready to answer from{' '}
+          {knowledgeDocs.reduce((a, d) => a + d.chunks, 0)} indexed chunks across{' '}
           {knowledgeDocs.length} documents.
         </div>
       </Card>
@@ -53,11 +51,13 @@ export default function KnowledgePage() {
                   ))}
                 </div>
               </div>
-              <Button size="sm" variant="ghost">Reindex</Button>
+              <Button size="sm" variant="ghost">
+                Reindex
+              </Button>
             </div>
           </Card>
         ))}
       </div>
     </div>
-  );
+  )
 }

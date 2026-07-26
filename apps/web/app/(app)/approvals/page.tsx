@@ -1,14 +1,13 @@
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { approvals } from "@/lib/mock-data";
-import { Calendar, CreditCard, MessageSquare, ShieldCheck } from "lucide-react";
+import { Card, Badge, Button } from '@aetheros/ui'
+
+import { approvals } from '@/lib/mock-data'
+import { Calendar, CreditCard, MessageSquare, ShieldCheck } from 'lucide-react'
 
 const kindIcon = {
   reply: MessageSquare,
   calendar: Calendar,
   payment: CreditCard,
-};
+}
 
 export default function ApprovalsPage() {
   return (
@@ -22,7 +21,7 @@ export default function ApprovalsPage() {
 
       <div className="space-y-3">
         {approvals.map((a) => {
-          const Icon = kindIcon[a.kind];
+          const Icon = kindIcon[a.kind]
           return (
             <Card key={a.id} className="p-5">
               <div className="flex items-start gap-3">
@@ -44,16 +43,18 @@ export default function ApprovalsPage() {
                 </div>
                 <div className="flex gap-2">
                   <Button size="sm">Approve</Button>
-                  <Button size="sm" variant="outline">Modify</Button>
+                  <Button size="sm" variant="outline">
+                    Modify
+                  </Button>
                   <Button size="sm" variant="ghost" className="text-destructive">
                     Reject
                   </Button>
                 </div>
               </div>
             </Card>
-          );
+          )
         })}
       </div>
     </div>
-  );
+  )
 }

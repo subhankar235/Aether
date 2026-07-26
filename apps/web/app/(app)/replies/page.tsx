@@ -1,272 +1,272 @@
-"use client"
+import { Card, Badge, Button, Textarea } from '@aetheros/ui'
+;('use client')
 
-import { useEffect, useState, useRef } from "react";
-import { useAuth } from "@clerk/nextjs";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Sparkles, ShieldCheck, Loader2, RotateCw } from "lucide-react";
+import { useEffect, useState, useRef } from 'react'
+import { useAuth } from '@clerk/nextjs'
+
+import { Sparkles, ShieldCheck, Loader2, RotateCw } from 'lucide-react'
 
 interface DraftItem {
-  id: string;
-  email_id?: string;
-  body: string;
-  version_history?: any[];
-  status: string;
-  created_at?: string;
-  recipient?: string;
-  subject?: string;
-  original_body?: string;
-  original_received_at?: string;
+  id: string
+  email_id?: string
+  body: string
+  version_history?: any[]
+  status: string
+  created_at?: string
+  recipient?: string
+  subject?: string
+  original_body?: string
+  original_received_at?: string
 }
 
 export default function RepliesPage() {
-  const { getToken, isLoaded } = useAuth();
-  const [drafts, setDrafts] = useState<DraftItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const isUserEditingRef = useRef<Set<string>>(new Set());
+  const { getToken, isLoaded } = useAuth()
+  const [drafts, setDrafts] = useState<DraftItem[]>([])
+  const [loading, setLoading] = useState(true)
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const isUserEditingRef = useRef<Set<string>>(new Set())
 
   const getHeaders = async () => {
-    const token = await getToken();
-    const headers: Record<string, string> = { "Content-Type": "application/json" };
+    const token = await getToken()
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' }
     if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
+      headers['Authorization'] = `Bearer ${token}`
     } else {
-      headers["Authorization"] = `Bearer dev-token-nathsubhankar57@gmail.com`;
+      headers['Authorization'] = `Bearer dev-token-nathsubhankar57@gmail.com`
     }
-    return headers;
-  };
+    return headers
+  }
 
   const fetchDrafts = async () => {
-    let cachedMap = new Map<string, DraftItem>();
+    let cachedMap = new Map<string, DraftItem>()
     try {
-      const cachedArr: DraftItem[] = JSON.parse(localStorage.getItem("active_drafts_cache") || "[]");
-      cachedArr.forEach((c) => cachedMap.set(c.id, c));
+      const cachedArr: DraftItem[] = JSON.parse(localStorage.getItem('active_drafts_cache') || '[]')
+      cachedArr.forEach((c) => cachedMap.set(c.id, c))
     } catch (e) {}
 
-    let apiData: DraftItem[] | null = null;
+    let apiData: DraftItem[] | null = null
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const headers = await getHeaders();
-      const res = await fetch(`${apiUrl}/replies/drafts`, { headers });
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+      const headers = await getHeaders()
+      const res = await fetch(`${apiUrl}/replies/drafts`, { headers })
       if (res.ok) {
-        const data: DraftItem[] = await res.json();
-        if (Array.isArray(data)) apiData = data;
+        const data: DraftItem[] = await res.json()
+        if (Array.isArray(data)) apiData = data
       }
     } catch (err) {
-      console.error("Error fetching drafts from API:", err);
+      console.error('Error fetching drafts from API:', err)
     }
 
     setDrafts((currentDrafts) => {
-      const mergedMap = new Map<string, DraftItem>();
+      const mergedMap = new Map<string, DraftItem>()
 
       // 1. Add API data (authoritative source)
       if (apiData) {
         apiData.forEach((apiItem) => {
-          const cached = cachedMap.get(apiItem.id);
-          let item = { ...apiItem };
+          const cached = cachedMap.get(apiItem.id)
+          let item = { ...apiItem }
           if (cached) {
-            if (item.recipient === "Recipient" && cached.recipient) item.recipient = cached.recipient;
-            if (item.subject === "Reply Draft" && cached.subject) item.subject = cached.subject;
-            if (item.original_body === "Original Email Content" && cached.original_body) item.original_body = cached.original_body;
+            if (item.recipient === 'Recipient' && cached.recipient)
+              item.recipient = cached.recipient
+            if (item.subject === 'Reply Draft' && cached.subject) item.subject = cached.subject
+            if (item.original_body === 'Original Email Content' && cached.original_body)
+              item.original_body = cached.original_body
           }
-          mergedMap.set(apiItem.id, item);
-        });
+          mergedMap.set(apiItem.id, item)
+        })
       }
 
       // 2. Add any cached drafts not already in API response (from command page)
       cachedMap.forEach((cachedItem, id) => {
-        if (!mergedMap.has(id) && cachedItem.status === "drafting") {
-          mergedMap.set(id, { ...cachedItem });
+        if (!mergedMap.has(id) && cachedItem.status === 'drafting') {
+          mergedMap.set(id, { ...cachedItem })
         }
-      });
+      })
 
-      const finalList = Array.from(mergedMap.values());
+      const finalList = Array.from(mergedMap.values())
       try {
         if (finalList.length > 0 || !apiData) {
-          localStorage.setItem("active_drafts_cache", JSON.stringify(finalList));
+          localStorage.setItem('active_drafts_cache', JSON.stringify(finalList))
         }
       } catch (e) {}
-      return finalList;
-    });
-  };
+      return finalList
+    })
+  }
 
   useEffect(() => {
-    fetchDrafts().finally(() => setLoading(false));
+    fetchDrafts().finally(() => setLoading(false))
 
-    const onFocus = () => fetchDrafts();
-    window.addEventListener("focus", onFocus);
-    const interval = setInterval(() => fetchDrafts(), 4000);
+    const onFocus = () => fetchDrafts()
+    window.addEventListener('focus', onFocus)
+    const interval = setInterval(() => fetchDrafts(), 4000)
 
     return () => {
-      window.removeEventListener("focus", onFocus);
-      clearInterval(interval);
-    };
-  }, [isLoaded]);
+      window.removeEventListener('focus', onFocus)
+      clearInterval(interval)
+    }
+  }, [isLoaded])
 
   const saveDraftToBackend = async (draftId: string, currentBody: string) => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const headers = await getHeaders();
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+      const headers = await getHeaders()
       await fetch(`${apiUrl}/replies/drafts/${draftId}`, {
-        method: "PUT",
+        method: 'PUT',
         headers,
         body: JSON.stringify({ current_body: currentBody }),
-      });
+      })
     } catch (err) {
-      console.warn("Failed to save draft body to backend:", err);
+      console.warn('Failed to save draft body to backend:', err)
     }
-  };
+  }
 
   const handleTextareaChange = (draftId: string, newBody: string) => {
-    isUserEditingRef.current.add(draftId);
+    isUserEditingRef.current.add(draftId)
     setDrafts((prev) => {
-      const next = prev.map((item) => (item.id === draftId ? { ...item, body: newBody } : item));
+      const next = prev.map((item) => (item.id === draftId ? { ...item, body: newBody } : item))
       try {
-        localStorage.setItem("active_drafts_cache", JSON.stringify(next));
+        localStorage.setItem('active_drafts_cache', JSON.stringify(next))
       } catch (e) {}
-      return next;
-    });
-    saveDraftToBackend(draftId, newBody);
-  };
+      return next
+    })
+    saveDraftToBackend(draftId, newBody)
+  }
 
   const handleEdit = async (draftId: string, instruction: string, currentBody: string) => {
-    setEditingId(draftId);
+    setEditingId(draftId)
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const headers = await getHeaders();
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+      const headers = await getHeaders()
       const res = await fetch(`${apiUrl}/replies/drafts/${draftId}/edit`, {
-        method: "POST",
+        method: 'POST',
         headers,
         body: JSON.stringify({ instructions: instruction, current_body: currentBody }),
-      });
+      })
       if (res.ok) {
-        const data = await res.json();
-        isUserEditingRef.current.delete(draftId);
+        const data = await res.json()
+        isUserEditingRef.current.delete(draftId)
         setDrafts((prev) => {
           const next = prev.map((d) =>
-            d.id === draftId ? { ...d, body: data.body, version_history: data.version_history } : d
-          );
+            d.id === draftId ? { ...d, body: data.body, version_history: data.version_history } : d,
+          )
           try {
-            localStorage.setItem("active_drafts_cache", JSON.stringify(next));
+            localStorage.setItem('active_drafts_cache', JSON.stringify(next))
           } catch (e) {}
-          return next;
-        });
+          return next
+        })
       }
     } catch (err) {
-      console.error("Failed to edit draft:", err);
+      console.error('Failed to edit draft:', err)
     } finally {
-      setEditingId(null);
+      setEditingId(null)
     }
-  };
+  }
 
   const handleApproveAndSend = async (draftId: string, currentBody: string) => {
-    setEditingId(draftId);
+    setEditingId(draftId)
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const headers = await getHeaders();
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+      const headers = await getHeaders()
 
       // 1. Prepare Send (Create Approval request & sync latest manual body)
       const prepRes = await fetch(`${apiUrl}/replies/drafts/${draftId}/prepare-send`, {
-        method: "POST",
+        method: 'POST',
         headers,
         body: JSON.stringify({ current_body: currentBody }),
-      });
+      })
 
       if (!prepRes.ok) {
-        const errText = await prepRes.text();
-        throw new Error(`Prepare send failed: ${errText}`);
+        const errText = await prepRes.text()
+        throw new Error(`Prepare send failed: ${errText}`)
       }
 
-      const prepData = await prepRes.json();
-      const approvalId = prepData.approval_id;
+      const prepData = await prepRes.json()
+      const approvalId = prepData.approval_id
 
       // 2. Execute Send with Approval
       const sendRes = await fetch(`${apiUrl}/replies/drafts/${draftId}/send`, {
-        method: "POST",
+        method: 'POST',
         headers,
         body: JSON.stringify({ approval_id: approvalId }),
-      });
+      })
 
       if (sendRes.ok) {
-        isUserEditingRef.current.delete(draftId);
+        isUserEditingRef.current.delete(draftId)
         setDrafts((prev) => {
-          const next = prev.filter((d) => d.id !== draftId);
+          const next = prev.filter((d) => d.id !== draftId)
           try {
-            localStorage.setItem("active_drafts_cache", JSON.stringify(next));
+            localStorage.setItem('active_drafts_cache', JSON.stringify(next))
           } catch (e) {}
-          return next;
-        });
-        alert("✅ Email approved and sent successfully via Gmail API!");
+          return next
+        })
+        alert('✅ Email approved and sent successfully via Gmail API!')
       } else {
-        const errText = await sendRes.text();
-        alert(`Failed to send email: ${errText}`);
+        const errText = await sendRes.text()
+        alert(`Failed to send email: ${errText}`)
       }
     } catch (err: any) {
-      console.error("Failed to approve and send draft:", err);
-      alert(`Error sending email: ${err.message || err}`);
+      console.error('Failed to approve and send draft:', err)
+      alert(`Error sending email: ${err.message || err}`)
     } finally {
-      setEditingId(null);
+      setEditingId(null)
     }
-  };
+  }
 
   const handleDiscard = async (draftId: string) => {
     try {
-      isUserEditingRef.current.delete(draftId);
+      isUserEditingRef.current.delete(draftId)
       setDrafts((prev) => {
-        const next = prev.filter((d) => d.id !== draftId);
+        const next = prev.filter((d) => d.id !== draftId)
         try {
-          localStorage.setItem("active_drafts_cache", JSON.stringify(next));
+          localStorage.setItem('active_drafts_cache', JSON.stringify(next))
         } catch (e) {}
-        return next;
-      });
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const headers = await getHeaders();
-      await fetch(`${apiUrl}/replies/drafts/${draftId}`, { method: "DELETE", headers });
+        return next
+      })
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+      const headers = await getHeaders()
+      await fetch(`${apiUrl}/replies/drafts/${draftId}`, { method: 'DELETE', headers })
     } catch (err) {
-      console.error("Failed to discard draft:", err);
+      console.error('Failed to discard draft:', err)
     }
-  };
+  }
 
-  const [generating, setGenerating] = useState(false);
+  const [generating, setGenerating] = useState(false)
 
   const handleGenerateNewDraft = async () => {
-    setGenerating(true);
+    setGenerating(true)
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const token = await getToken();
-      const headers: Record<string, string> = {};
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+      const token = await getToken()
+      const headers: Record<string, string> = {}
       if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
+        headers['Authorization'] = `Bearer ${token}`
       } else {
-        headers["Authorization"] = `Bearer dev-token-nathsubhankar57@gmail.com`;
+        headers['Authorization'] = `Bearer dev-token-nathsubhankar57@gmail.com`
       }
 
-      const formData = new FormData();
-      formData.append("command", "draft a reply to recent email");
-      formData.append("session_id", crypto.randomUUID());
+      const formData = new FormData()
+      formData.append('command', 'draft a reply to recent email')
+      formData.append('session_id', crypto.randomUUID())
 
       const res = await fetch(`${apiUrl}/command`, {
-        method: "POST",
+        method: 'POST',
         headers,
         body: formData,
-      });
+      })
 
       if (res.ok) {
-        await fetchDrafts();
+        await fetchDrafts()
       } else {
-        const errTxt = await res.text();
-        alert(`Failed to generate draft: ${errTxt}`);
+        const errTxt = await res.text()
+        alert(`Failed to generate draft: ${errTxt}`)
       }
     } catch (err: any) {
-      console.error("Error generating new draft:", err);
-      alert(`Error generating draft: ${err.message || err}`);
+      console.error('Error generating new draft:', err)
+      alert(`Error generating draft: ${err.message || err}`)
     } finally {
-      setGenerating(false);
+      setGenerating(false)
     }
-  };
+  }
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
@@ -274,7 +274,8 @@ export default function RepliesPage() {
         <div>
           <h1 className="text-2xl font-semibold">Reply Drafts</h1>
           <p className="text-sm text-muted-foreground">
-            Every draft waits behind an approval gate. Review the original email, edit the draft, and click Approve & Send.
+            Every draft waits behind an approval gate. Review the original email, edit the draft,
+            and click Approve & Send.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -284,15 +285,19 @@ export default function RepliesPage() {
             disabled={generating}
             className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
           >
-            {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-            {generating ? "Generating Draft..." : "Generate New Draft"}
+            {generating ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Sparkles className="h-4 w-4" />
+            )}
+            {generating ? 'Generating Draft...' : 'Generate New Draft'}
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => {
-              setLoading(true);
-              fetchDrafts().finally(() => setLoading(false));
+              setLoading(true)
+              fetchDrafts().finally(() => setLoading(false))
             }}
             className="gap-2"
           >
@@ -308,15 +313,20 @@ export default function RepliesPage() {
       ) : drafts.length === 0 ? (
         <Card className="p-8 text-center space-y-4">
           <div className="text-sm text-muted-foreground">
-            No active reply drafts currently in queue. Click below to generate a new AI draft from your recent email!
+            No active reply drafts currently in queue. Click below to generate a new AI draft from
+            your recent email!
           </div>
           <Button
             onClick={handleGenerateNewDraft}
             disabled={generating}
             className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
           >
-            {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-            {generating ? "Generating Draft..." : "Generate New Draft Now"}
+            {generating ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Sparkles className="h-4 w-4" />
+            )}
+            {generating ? 'Generating Draft...' : 'Generate New Draft Now'}
           </Button>
         </Card>
       ) : (
@@ -327,14 +337,19 @@ export default function RepliesPage() {
                 <div>
                   <div className="flex items-center gap-2">
                     <Sparkles className="h-4 w-4 text-primary" />
-                    <span className="text-base font-semibold">Draft Reply to {d.recipient || "Recipient"}</span>
+                    <span className="text-base font-semibold">
+                      Draft Reply to {d.recipient || 'Recipient'}
+                    </span>
                     <Badge variant="outline" className="border-accent/40 text-accent">
                       <ShieldCheck className="mr-1 h-3 w-3" /> Awaiting Approval
                     </Badge>
                   </div>
                   {d.subject && (
                     <div className="mt-1 text-xs text-muted-foreground font-medium">
-                      Subject: <span className="text-foreground font-semibold">{d.subject.startsWith("Re:") ? d.subject : `Re: ${d.subject}`}</span>
+                      Subject:{' '}
+                      <span className="text-foreground font-semibold">
+                        {d.subject.startsWith('Re:') ? d.subject : `Re: ${d.subject}`}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -350,11 +365,26 @@ export default function RepliesPage() {
                 <div className="flex items-center justify-between text-muted-foreground font-semibold uppercase tracking-wider text-[10px]">
                   <span>Original Email Received</span>
                   {d.original_received_at && (
-                    <span>{new Date(d.original_received_at).toLocaleString([], { dateStyle: "short", timeStyle: "short" })}</span>
+                    <span>
+                      {new Date(d.original_received_at).toLocaleString([], {
+                        dateStyle: 'short',
+                        timeStyle: 'short',
+                      })}
+                    </span>
                   )}
                 </div>
-                <div><span className="font-medium text-muted-foreground">From:</span> <span className="font-semibold text-foreground">{d.recipient || "(unknown)"}</span></div>
-                <div><span className="font-medium text-muted-foreground">Subject:</span> <span className="font-semibold text-foreground">{d.subject || "(no subject)"}</span></div>
+                <div>
+                  <span className="font-medium text-muted-foreground">From:</span>{' '}
+                  <span className="font-semibold text-foreground">
+                    {d.recipient || '(unknown)'}
+                  </span>
+                </div>
+                <div>
+                  <span className="font-medium text-muted-foreground">Subject:</span>{' '}
+                  <span className="font-semibold text-foreground">
+                    {d.subject || '(no subject)'}
+                  </span>
+                </div>
                 {d.original_body && (
                   <div className="mt-2 rounded bg-background p-2.5 text-foreground border text-xs leading-relaxed">
                     {d.original_body}
@@ -382,13 +412,17 @@ export default function RepliesPage() {
                   disabled={editingId === d.id}
                   className="bg-primary text-primary-foreground hover:bg-primary/90"
                 >
-                  {editingId === d.id ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : null}
+                  {editingId === d.id ? (
+                    <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+                  ) : null}
                   Approve & send
                 </Button>
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => handleEdit(d.id, "Shorten this draft while keeping key points", d.body)}
+                  onClick={() =>
+                    handleEdit(d.id, 'Shorten this draft while keeping key points', d.body)
+                  }
                   disabled={editingId === d.id}
                 >
                   Shorten
@@ -396,7 +430,7 @@ export default function RepliesPage() {
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => handleEdit(d.id, "Make the tone warmer and more friendly", d.body)}
+                  onClick={() => handleEdit(d.id, 'Make the tone warmer and more friendly', d.body)}
                   disabled={editingId === d.id}
                 >
                   Make warmer
@@ -404,7 +438,7 @@ export default function RepliesPage() {
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => handleEdit(d.id, "Make the tone formal and executive", d.body)}
+                  onClick={() => handleEdit(d.id, 'Make the tone formal and executive', d.body)}
                   disabled={editingId === d.id}
                 >
                   Make formal
@@ -423,5 +457,5 @@ export default function RepliesPage() {
         </div>
       )}
     </div>
-  );
+  )
 }

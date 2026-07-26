@@ -1,21 +1,22 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { emails, drafts } from "@/lib/mock-data";
-import { ArrowLeft, Calendar, MessageSquare, Sparkles } from "lucide-react";
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import { Badge, Card, Button } from '@aetheros/ui'
+import { emails, drafts } from '@/lib/mock-data'
+import { ArrowLeft, Calendar, MessageSquare, Sparkles } from 'lucide-react'
 
 export default async function EmailDetail({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const email = emails.find((e) => e.id === id);
-  if (!email) notFound();
+  const { id } = await params
+  const email = emails.find((e) => e.id === id)
+  if (!email) notFound()
 
-  const draft = drafts.find((d) => d.emailId === email.id);
+  const draft = drafts.find((d) => d.emailId === email.id)
 
   return (
     <div className="mx-auto max-w-4xl space-y-4">
-      <Link href="/dashboard" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+      <Link
+        href="/dashboard"
+        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+      >
         <ArrowLeft className="h-4 w-4" /> Back to inbox
       </Link>
 
@@ -34,7 +35,7 @@ export default async function EmailDetail({ params }: { params: Promise<{ id: st
         </div>
         <h1 className="mt-3 text-2xl font-semibold">{email.subject}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          From <span className="text-foreground">{email.from}</span> &lt;{email.fromEmail}&gt; ·{" "}
+          From <span className="text-foreground">{email.from}</span> &lt;{email.fromEmail}&gt; ·{' '}
           {new Date(email.receivedAt).toLocaleString()}
         </p>
 
@@ -62,8 +63,12 @@ export default async function EmailDetail({ params }: { params: Promise<{ id: st
           >
             <Calendar className="h-3.5 w-3.5" /> Schedule from this
           </Link>
-          <Button size="sm" variant="ghost">Archive</Button>
-          <Button size="sm" variant="ghost">Mark unread</Button>
+          <Button size="sm" variant="ghost">
+            Archive
+          </Button>
+          <Button size="sm" variant="ghost">
+            Mark unread
+          </Button>
         </div>
       </Card>
 
@@ -80,11 +85,15 @@ export default async function EmailDetail({ params }: { params: Promise<{ id: st
           </pre>
           <div className="mt-3 flex gap-2">
             <Button size="sm">Approve & send</Button>
-            <Button size="sm" variant="outline">Edit tone</Button>
-            <Button size="sm" variant="ghost">Discard</Button>
+            <Button size="sm" variant="outline">
+              Edit tone
+            </Button>
+            <Button size="sm" variant="ghost">
+              Discard
+            </Button>
           </div>
         </Card>
       )}
     </div>
-  );
+  )
 }

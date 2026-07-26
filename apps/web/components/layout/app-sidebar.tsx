@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useUser, UserButton } from "@clerk/nextjs";
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useUser, UserButton } from '@clerk/nextjs'
 import {
   Inbox,
   Mic,
@@ -16,7 +16,7 @@ import {
   ScrollText,
   Settings,
   Sparkles,
-} from "lucide-react";
+} from 'lucide-react'
 import {
   Sidebar,
   SidebarContent,
@@ -28,33 +28,33 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
+} from '@aetheros/ui'
 
 const workspace = [
-  { title: "Dashboard", url: "/dashboard", icon: Inbox },
-  { title: "Command Center", url: "/command", icon: Mic },
-];
+  { title: 'Dashboard', url: '/dashboard', icon: Inbox },
+  { title: 'Command Center', url: '/command', icon: Mic },
+]
 
 const agents = [
-  { title: "Reply Drafts", url: "/replies", icon: MessageSquare },
-  { title: "Calendar", url: "/calendar", icon: Calendar },
-  { title: "Knowledge", url: "/knowledge", icon: BookOpen },
-  { title: "Research", url: "/research", icon: Search },
-  { title: "Support", url: "/support", icon: LifeBuoy },
-  { title: "Payments", url: "/payments", icon: CreditCard },
-];
+  { title: 'Reply Drafts', url: '/replies', icon: MessageSquare },
+  { title: 'Calendar', url: '/calendar', icon: Calendar },
+  { title: 'Knowledge', url: '/knowledge', icon: BookOpen },
+  { title: 'Research', url: '/research', icon: Search },
+  { title: 'Support', url: '/support', icon: LifeBuoy },
+  { title: 'Payments', url: '/payments', icon: CreditCard },
+]
 
 const oversight = [
-  { title: "Approvals", url: "/approvals", icon: ShieldCheck },
-  { title: "Audit Log", url: "/audit", icon: ScrollText },
-  { title: "Settings", url: "/settings", icon: Settings },
-];
+  { title: 'Approvals', url: '/approvals', icon: ShieldCheck },
+  { title: 'Audit Log', url: '/audit', icon: ScrollText },
+  { title: 'Settings', url: '/settings', icon: Settings },
+]
 
 export function AppSidebar() {
-  const pathname = usePathname();
-  const { user } = useUser();
+  const pathname = usePathname()
+  const { user } = useUser()
   const isActive = (url: string) =>
-    url === "/dashboard" ? pathname === url : pathname.startsWith(url);
+    url === '/dashboard' ? pathname === url : pathname.startsWith(url)
 
   const renderGroup = (
     label: string,
@@ -77,7 +77,7 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
-  );
+  )
 
   return (
     <Sidebar collapsible="icon">
@@ -93,23 +93,23 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
       <SidebarContent>
-        {renderGroup("Workspace", workspace)}
-        {renderGroup("Agents", agents)}
-        {renderGroup("Oversight", oversight)}
+        {renderGroup('Workspace', workspace)}
+        {renderGroup('Agents', agents)}
+        {renderGroup('Oversight', oversight)}
       </SidebarContent>
       <SidebarFooter>
         <div className="flex items-center gap-3 rounded-md bg-sidebar-accent px-3 py-2.5 group-data-[state=collapsed]/sidebar:justify-center group-data-[state=collapsed]/sidebar:gap-0 group-data-[state=collapsed]/sidebar:bg-transparent group-data-[state=collapsed]/sidebar:px-0 group-data-[state=collapsed]/sidebar:py-0 group-data-[state=collapsed]/sidebar:[&_.cl-userButtonTrigger]:!flex group-data-[state=collapsed]/sidebar:[&_.cl-userButtonTrigger]:!justify-center">
           <UserButton />
           <div className="flex flex-col text-xs leading-tight group-data-[state=collapsed]/sidebar:hidden">
             <span className="font-medium">
-              {user?.fullName || user?.emailAddresses?.[0]?.emailAddress || "User"}
+              {user?.fullName || user?.emailAddresses?.[0]?.emailAddress || 'User'}
             </span>
             <span className="text-muted-foreground">
-              {user?.emailAddresses?.[0]?.emailAddress || ""}
+              {user?.emailAddresses?.[0]?.emailAddress || ''}
             </span>
           </div>
         </div>
       </SidebarFooter>
     </Sidebar>
-  );
+  )
 }

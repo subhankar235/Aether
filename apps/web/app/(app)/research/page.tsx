@@ -1,8 +1,9 @@
-"use client";
+import { Card, Badge, Button, Input } from '@aetheros/ui'
+;('use client')
 
-import { useState, useCallback } from "react";
-import { useAuth } from "@clerk/nextjs";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useCallback } from 'react'
+import { useAuth } from '@clerk/nextjs'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   Search,
   Loader2,
@@ -23,12 +24,9 @@ import {
   HelpCircle,
   Sparkles,
   ChevronRight,
-} from "lucide-react";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { runResearch } from "@/lib/api/research";
+} from 'lucide-react'
+
+import { runResearch } from '@/lib/api/research'
 import {
   type ResearchResponse,
   type ResearchReportResult,
@@ -38,18 +36,18 @@ import {
   isDisambiguation,
   parseSwotAnalysis,
   collectAllSources,
-} from "@/lib/types/research";
+} from '@/lib/types/research'
 
 /* ------------------------------------------------------------------ */
 /* State types                                                        */
 /* ------------------------------------------------------------------ */
-type PageState = "idle" | "loading" | "completed" | "error" | "disambiguation";
+type PageState = 'idle' | 'loading' | 'completed' | 'error' | 'disambiguation'
 
 interface ReportEntry {
-  company: string;
-  result: ResearchReportResult;
-  fromCache: boolean;
-  generatedAt: string;
+  company: string
+  result: ResearchReportResult
+  fromCache: boolean
+  generatedAt: string
 }
 
 /* ------------------------------------------------------------------ */
@@ -59,11 +57,11 @@ const fadeUp = {
   initial: { opacity: 0, y: 18 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -10 },
-};
+}
 
 const staggerContainer = {
   animate: { transition: { staggerChildren: 0.07 } },
-};
+}
 
 /* ------------------------------------------------------------------ */
 /* Skeleton Loader                                                     */
@@ -84,7 +82,7 @@ function ReportSkeleton() {
         </Card>
       ))}
     </div>
-  );
+  )
 }
 
 /* ------------------------------------------------------------------ */
@@ -93,46 +91,43 @@ function ReportSkeleton() {
 function SwotGrid({ data }: { data: SwotData }) {
   const quadrants = [
     {
-      title: "Strengths",
+      title: 'Strengths',
       items: data.strengths,
-      color: "text-emerald-400",
-      bg: "bg-emerald-500/10",
-      border: "border-emerald-500/20",
+      color: 'text-emerald-400',
+      bg: 'bg-emerald-500/10',
+      border: 'border-emerald-500/20',
       icon: TrendingUp,
     },
     {
-      title: "Weaknesses",
+      title: 'Weaknesses',
       items: data.weaknesses,
-      color: "text-amber-400",
-      bg: "bg-amber-500/10",
-      border: "border-amber-500/20",
+      color: 'text-amber-400',
+      bg: 'bg-amber-500/10',
+      border: 'border-amber-500/20',
       icon: AlertTriangle,
     },
     {
-      title: "Opportunities",
+      title: 'Opportunities',
       items: data.opportunities,
-      color: "text-blue-400",
-      bg: "bg-blue-500/10",
-      border: "border-blue-500/20",
+      color: 'text-blue-400',
+      bg: 'bg-blue-500/10',
+      border: 'border-blue-500/20',
       icon: Target,
     },
     {
-      title: "Threats",
+      title: 'Threats',
       items: data.threats,
-      color: "text-red-400",
-      bg: "bg-red-500/10",
-      border: "border-red-500/20",
+      color: 'text-red-400',
+      bg: 'bg-red-500/10',
+      border: 'border-red-500/20',
       icon: ShieldAlert,
     },
-  ];
+  ]
 
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
       {quadrants.map((q) => (
-        <div
-          key={q.title}
-          className={`rounded-lg border ${q.border} ${q.bg} p-4`}
-        >
+        <div key={q.title} className={`rounded-lg border ${q.border} ${q.bg} p-4`}>
           <div className={`mb-2 flex items-center gap-2 text-sm font-semibold ${q.color}`}>
             <q.icon className="h-4 w-4" />
             {q.title}
@@ -140,10 +135,7 @@ function SwotGrid({ data }: { data: SwotData }) {
           {q.items.length > 0 ? (
             <ul className="space-y-1.5">
               {q.items.map((item, i) => (
-                <li
-                  key={i}
-                  className="flex gap-2 text-[13px] leading-relaxed text-foreground/80"
-                >
+                <li key={i} className="flex gap-2 text-[13px] leading-relaxed text-foreground/80">
                   <ChevronRight className={`mt-0.5 h-3 w-3 shrink-0 ${q.color}`} />
                   <span>{item}</span>
                 </li>
@@ -155,7 +147,7 @@ function SwotGrid({ data }: { data: SwotData }) {
         </div>
       ))}
     </div>
-  );
+  )
 }
 
 /* ------------------------------------------------------------------ */
@@ -165,22 +157,19 @@ function ReportSection({
   icon: Icon,
   title,
   content,
-  accentColor = "text-primary",
+  accentColor = 'text-primary',
   delay = 0,
 }: {
-  icon: React.ComponentType<{ className?: string }>;
-  title: string;
-  content: string;
-  accentColor?: string;
-  delay?: number;
+  icon: React.ComponentType<{ className?: string }>
+  title: string
+  content: string
+  accentColor?: string
+  delay?: number
 }) {
-  if (!content || content === "No data found.") return null;
+  if (!content || content === 'No data found.') return null
 
   // Clean inline source references for display — replace [url @ ts] with subtle timestamp
-  const formattedContent = content.replace(
-    /\[([^\]\s@]+)\s*@\s*([^\]]+)\]/g,
-    "⌞$2⌝"
-  );
+  const formattedContent = content.replace(/\[([^\]\s@]+)\s*@\s*([^\]]+)\]/g, '⌞$2⌝')
 
   return (
     <motion.div
@@ -199,14 +188,14 @@ function ReportSection({
         </div>
       </Card>
     </motion.div>
-  );
+  )
 }
 
 /* ------------------------------------------------------------------ */
 /* Sources Panel                                                       */
 /* ------------------------------------------------------------------ */
 function SourcesPanel({ sources }: { sources: SourceReference[] }) {
-  if (sources.length === 0) return null;
+  if (sources.length === 0) return null
 
   return (
     <motion.div variants={fadeUp} initial="initial" animate="animate" transition={{ delay: 0.6 }}>
@@ -241,63 +230,62 @@ function SourcesPanel({ sources }: { sources: SourceReference[] }) {
         </div>
       </Card>
     </motion.div>
-  );
+  )
 }
 
 /* ================================================================== */
 /* Main Research Page                                                  */
 /* ================================================================== */
 export default function ResearchPage() {
-  const { getToken } = useAuth();
+  const { getToken } = useAuth()
 
-  const [company, setCompany] = useState("");
-  const [context, setContext] = useState("");
-  const [state, setState] = useState<PageState>("idle");
-  const [report, setReport] = useState<ResearchReportResult | null>(null);
-  const [fromCache, setFromCache] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [disambiguation, setDisambiguation] = useState<string | null>(null);
-  const [history, setHistory] = useState<ReportEntry[]>([]);
-  const [searchedCompany, setSearchedCompany] = useState("");
-
+  const [company, setCompany] = useState('')
+  const [context, setContext] = useState('')
+  const [state, setState] = useState<PageState>('idle')
+  const [report, setReport] = useState<ResearchReportResult | null>(null)
+  const [fromCache, setFromCache] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [disambiguation, setDisambiguation] = useState<string | null>(null)
+  const [history, setHistory] = useState<ReportEntry[]>([])
+  const [searchedCompany, setSearchedCompany] = useState('')
 
   const handleResearch = useCallback(
     async (overrideContext?: string) => {
-      const companyName = company.trim();
-      if (!companyName) return;
+      const companyName = company.trim()
+      if (!companyName) return
 
-      setState("loading");
-      setError(null);
-      setReport(null);
-      setDisambiguation(null);
-      setFromCache(false);
-      setSearchedCompany(companyName);
+      setState('loading')
+      setError(null)
+      setReport(null)
+      setDisambiguation(null)
+      setFromCache(false)
+      setSearchedCompany(companyName)
 
       try {
-        const token = await getToken();
+        const token = await getToken()
         const res: ResearchResponse = await runResearch(
           companyName,
           token,
-          overrideContext || context || undefined
-        );
+          overrideContext || context || undefined,
+        )
 
         if (isDisambiguation(res)) {
-          setState("disambiguation");
-          setDisambiguation(res.result.clarification as string);
-          return;
+          setState('disambiguation')
+          setDisambiguation(res.result.clarification as string)
+          return
         }
 
         if (isCompletedReport(res)) {
-          const result = res.result as unknown as ResearchReportResult;
-          setReport(result);
-          setFromCache(!!res._from_cache || !!res._cache_hit);
-          setState("completed");
+          const result = res.result as unknown as ResearchReportResult
+          setReport(result)
+          setFromCache(!!res._from_cache || !!res._cache_hit)
+          setState('completed')
 
           // Add to history
           setHistory((prev) => {
             const filtered = prev.filter(
-              (h) => h.company.toLowerCase() !== companyName.toLowerCase()
-            );
+              (h) => h.company.toLowerCase() !== companyName.toLowerCase(),
+            )
             return [
               {
                 company: companyName,
@@ -306,46 +294,43 @@ export default function ResearchPage() {
                 generatedAt: result.report_date || new Date().toISOString(),
               },
               ...filtered,
-            ].slice(0, 10);
-          });
-          return;
+            ].slice(0, 10)
+          })
+          return
         }
 
         // Unknown status — treat as error
-        setState("error");
-        setError("Received an unexpected response from the research agent.");
+        setState('error')
+        setError('Received an unexpected response from the research agent.')
       } catch (err: unknown) {
-        setState("error");
-        setError(err instanceof Error ? err.message : "An unexpected error occurred");
+        setState('error')
+        setError(err instanceof Error ? err.message : 'An unexpected error occurred')
       }
     },
-    [company, context, getToken]
-  );
+    [company, context, getToken],
+  )
 
   const handleDisambiguationSubmit = useCallback(() => {
     if (context.trim()) {
-      handleResearch(context.trim());
+      handleResearch(context.trim())
     }
-  }, [context, handleResearch]);
+  }, [context, handleResearch])
 
   const handleRetry = useCallback(() => {
-    handleResearch();
-  }, [handleResearch]);
+    handleResearch()
+  }, [handleResearch])
 
-  const handleHistoryClick = useCallback(
-    (entry: ReportEntry) => {
-      setCompany(entry.company);
-      setReport(entry.result);
-      setFromCache(entry.fromCache);
-      setSearchedCompany(entry.company);
-      setState("completed");
-    },
-    []
-  );
+  const handleHistoryClick = useCallback((entry: ReportEntry) => {
+    setCompany(entry.company)
+    setReport(entry.result)
+    setFromCache(entry.fromCache)
+    setSearchedCompany(entry.company)
+    setState('completed')
+  }, [])
 
   // Parse SWOT + sources from the current report
-  const swotData = report ? parseSwotAnalysis(report.swot_analysis) : null;
-  const sources = report ? collectAllSources(report) : [];
+  const swotData = report ? parseSwotAnalysis(report.swot_analysis) : null
+  const sources = report ? collectAllSources(report) : []
 
   return (
     <div className="mx-auto max-w-5xl space-y-6 pb-12">
@@ -373,30 +358,29 @@ export default function ResearchPage() {
               placeholder="e.g. Stripe, Notion, Linear…"
               value={company}
               onChange={(e) => setCompany(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleResearch()}
-              disabled={state === "loading"}
+              onKeyDown={(e) => e.key === 'Enter' && handleResearch()}
+              disabled={state === 'loading'}
             />
           </div>
           <div className="sm:w-52 space-y-1">
             <label htmlFor="research-context" className="text-xs font-medium text-muted-foreground">
-              Context{" "}
-              <span className="text-muted-foreground/60">(optional)</span>
+              Context <span className="text-muted-foreground/60">(optional)</span>
             </label>
             <Input
               id="research-context"
               placeholder="e.g. fintech, SaaS…"
               value={context}
               onChange={(e) => setContext(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleResearch()}
-              disabled={state === "loading"}
+              onKeyDown={(e) => e.key === 'Enter' && handleResearch()}
+              disabled={state === 'loading'}
             />
           </div>
           <Button
             onClick={() => handleResearch()}
-            disabled={state === "loading" || !company.trim()}
+            disabled={state === 'loading' || !company.trim()}
             className="sm:w-auto shrink-0"
           >
-            {state === "loading" ? (
+            {state === 'loading' ? (
               <>
                 <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
                 Researching…
@@ -413,7 +397,7 @@ export default function ResearchPage() {
 
       {/* ── Loading ── */}
       <AnimatePresence mode="wait">
-        {state === "loading" && (
+        {state === 'loading' && (
           <motion.div
             key="loading"
             initial={{ opacity: 0 }}
@@ -427,9 +411,7 @@ export default function ResearchPage() {
                   <Loader2 className="h-8 w-8 animate-spin text-primary relative" />
                 </div>
                 <div>
-                  <p className="font-medium">
-                    Researching {searchedCompany}…
-                  </p>
+                  <p className="font-medium">Researching {searchedCompany}…</p>
                   <p className="mt-1 text-xs text-muted-foreground">
                     Searching the web, crawling sources, and synthesizing insights
                   </p>
@@ -452,7 +434,7 @@ export default function ResearchPage() {
         )}
 
         {/* ── Disambiguation ── */}
-        {state === "disambiguation" && disambiguation && (
+        {state === 'disambiguation' && disambiguation && (
           <motion.div key="disambig" {...fadeUp}>
             <Card className="border-amber-500/30 bg-amber-500/5 p-5">
               <div className="flex items-start gap-3">
@@ -461,21 +443,15 @@ export default function ResearchPage() {
                 </div>
                 <div className="flex-1 space-y-3">
                   <div>
-                    <p className="font-medium text-amber-300">
-                      Disambiguation needed
-                    </p>
-                    <p className="mt-1 text-sm text-foreground/80">
-                      {disambiguation}
-                    </p>
+                    <p className="font-medium text-amber-300">Disambiguation needed</p>
+                    <p className="mt-1 text-sm text-foreground/80">{disambiguation}</p>
                   </div>
                   <div className="flex gap-2">
                     <Input
                       placeholder="Provide context to clarify…"
                       value={context}
                       onChange={(e) => setContext(e.target.value)}
-                      onKeyDown={(e) =>
-                        e.key === "Enter" && handleDisambiguationSubmit()
-                      }
+                      onKeyDown={(e) => e.key === 'Enter' && handleDisambiguationSubmit()}
                       className="max-w-sm"
                       autoFocus
                     />
@@ -495,7 +471,7 @@ export default function ResearchPage() {
         )}
 
         {/* ── Error ── */}
-        {state === "error" && error && (
+        {state === 'error' && error && (
           <motion.div key="error" {...fadeUp}>
             <Card className="border-destructive/30 bg-destructive/5 p-5">
               <div className="flex items-start gap-3">
@@ -503,16 +479,9 @@ export default function ResearchPage() {
                   <AlertTriangle className="h-5 w-5 text-destructive" />
                 </div>
                 <div className="flex-1">
-                  <p className="font-medium text-destructive">
-                    Research failed
-                  </p>
+                  <p className="font-medium text-destructive">Research failed</p>
                   <p className="mt-1 text-sm text-foreground/70">{error}</p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="mt-3"
-                    onClick={handleRetry}
-                  >
+                  <Button variant="outline" size="sm" className="mt-3" onClick={handleRetry}>
                     <RefreshCw className="mr-1.5 h-3.5 w-3.5" />
                     Retry
                   </Button>
@@ -523,7 +492,7 @@ export default function ResearchPage() {
         )}
 
         {/* ── Completed Report ── */}
-        {state === "completed" && report && (
+        {state === 'completed' && report && (
           <motion.div
             key="report"
             variants={staggerContainer}
@@ -557,7 +526,10 @@ export default function ResearchPage() {
                         Cached
                       </Badge>
                     )}
-                    <Badge variant="secondary" className="border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
+                    <Badge
+                      variant="secondary"
+                      className="border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+                    >
                       <CheckCircle2 className="mr-1 h-3 w-3" />
                       Completed
                     </Badge>
@@ -635,7 +607,7 @@ export default function ResearchPage() {
               title="Risks & Challenges"
               content={report.risks}
               accentColor="text-red-400"
-              delay={0.50}
+              delay={0.5}
             />
 
             {/* Sources */}
@@ -645,11 +617,9 @@ export default function ResearchPage() {
       </AnimatePresence>
 
       {/* ── Recent Reports (History) ── */}
-      {history.length > 0 && state !== "loading" && (
+      {history.length > 0 && state !== 'loading' && (
         <div className="space-y-3">
-          <h3 className="text-sm font-medium text-muted-foreground">
-            Recent Reports
-          </h3>
+          <h3 className="text-sm font-medium text-muted-foreground">Recent Reports</h3>
           <div className="grid gap-2 sm:grid-cols-2">
             {history.map((entry) => (
               <Card
@@ -663,9 +633,7 @@ export default function ResearchPage() {
                     <span className="font-medium">{entry.company}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    {entry.fromCache && (
-                      <Zap className="h-3 w-3 text-amber-400" />
-                    )}
+                    {entry.fromCache && <Zap className="h-3 w-3 text-amber-400" />}
                     <Badge variant="secondary" className="text-[10px]">
                       <CheckCircle2 className="mr-1 h-2.5 w-2.5" />
                       Done
@@ -686,7 +654,7 @@ export default function ResearchPage() {
       )}
 
       {/* ── Empty State ── */}
-      {state === "idle" && history.length === 0 && (
+      {state === 'idle' && history.length === 0 && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
           <Card className="p-8">
             <div className="flex flex-col items-center gap-4 text-center">
@@ -696,19 +664,19 @@ export default function ResearchPage() {
               <div>
                 <p className="font-medium">No research reports yet</p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Enter a company name above to generate an AI-powered market research report
-                  with SWOT analysis, competitor insights, and more.
+                  Enter a company name above to generate an AI-powered market research report with
+                  SWOT analysis, competitor insights, and more.
                 </p>
               </div>
               <div className="flex flex-wrap justify-center gap-2 mt-2">
-                {["Stripe", "Notion", "Linear", "Vercel"].map((name) => (
+                {['Stripe', 'Notion', 'Linear', 'Vercel'].map((name) => (
                   <Button
                     key={name}
                     variant="outline"
                     size="sm"
                     onClick={() => {
-                      setCompany(name);
-                      document.getElementById("research-company")?.focus();
+                      setCompany(name)
+                      document.getElementById('research-company')?.focus()
                     }}
                     className="text-xs"
                   >
@@ -721,5 +689,5 @@ export default function ResearchPage() {
         </motion.div>
       )}
     </div>
-  );
+  )
 }

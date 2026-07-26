@@ -1,116 +1,112 @@
-"use client";
+import { Badge, Card, Button, Input } from '@aetheros/ui'
+;('use client')
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { useAuth } from "@clerk/nextjs";
-import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { AlertCircle, Circle, Mail, Search, Zap, RefreshCw } from "lucide-react";
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { useAuth } from '@clerk/nextjs'
+
+import { AlertCircle, Circle, Mail, Search, Zap, RefreshCw } from 'lucide-react'
 
 interface RealEmail {
-  id: string;
-  gmail_message_id: string;
-  sender: string;
-  subject: string;
-  summary?: string;
-  priority: string;
-  category: string;
-  received_at: string;
+  id: string
+  gmail_message_id: string
+  sender: string
+  subject: string
+  summary?: string
+  priority: string
+  category: string
+  received_at: string
 }
 
 interface SummaryData {
-  total_emails: number;
-  high_priority: number;
-  unread: number;
-  recent_meetings: number;
-  pending_approvals: number;
+  total_emails: number
+  high_priority: number
+  unread: number
+  recent_meetings: number
+  pending_approvals: number
 }
 
 export default function Dashboard() {
-  const { getToken } = useAuth();
-  const [emails, setEmails] = useState<RealEmail[]>([]);
+  const { getToken } = useAuth()
+  const [emails, setEmails] = useState<RealEmail[]>([])
   const [summary, setSummary] = useState<SummaryData>({
     total_emails: 0,
     high_priority: 0,
     unread: 0,
     recent_meetings: 0,
     pending_approvals: 0,
-  });
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<"all" | "high">("all");
-  const [searchTerm, setSearchTerm] = useState("");
+  })
+  const [loading, setLoading] = useState(true)
+  const [filter, setFilter] = useState<'all' | 'high'>('all')
+  const [searchTerm, setSearchTerm] = useState('')
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
   const fetchDashboardData = async (skipAutoSync = false) => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const token = await getToken();
-      const headers: Record<string, string> = {};
+      const token = await getToken()
+      const headers: Record<string, string> = {}
       if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
+        headers['Authorization'] = `Bearer ${token}`
       } else {
-        headers["Authorization"] = `Bearer dev-token-nathsubhankar57@gmail.com`;
+        headers['Authorization'] = `Bearer dev-token-nathsubhankar57@gmail.com`
       }
 
       // 1. Fetch Summary
-      const summaryRes = await fetch(`${API_URL}/dashboard/summary`, { headers });
+      const summaryRes = await fetch(`${API_URL}/dashboard/summary`, { headers })
       if (summaryRes.ok) {
-        const summaryJson = await summaryRes.json();
-        setSummary(summaryJson);
+        const summaryJson = await summaryRes.json()
+        setSummary(summaryJson)
       }
 
       // 2. Fetch Real Inbox Emails from API
-      let emailsRes = await fetch(`${API_URL}/inbox/emails?limit=50`, { headers });
-      let emailsJson: RealEmail[] = [];
+      let emailsRes = await fetch(`${API_URL}/inbox/emails?limit=50`, { headers })
+      let emailsJson: RealEmail[] = []
       if (emailsRes.ok) {
-        emailsJson = await emailsRes.json();
+        emailsJson = await emailsRes.json()
       }
 
       // 3. Auto-sync from Gmail if no emails found and not a manual refresh
       if (emailsJson.length === 0 && !skipAutoSync) {
-        await fetch(`${API_URL}/inbox/recent?hours=24`, { headers });
-        emailsRes = await fetch(`${API_URL}/inbox/emails?limit=50`, { headers });
+        await fetch(`${API_URL}/inbox/recent?hours=24`, { headers })
+        emailsRes = await fetch(`${API_URL}/inbox/emails?limit=50`, { headers })
         if (emailsRes.ok) {
-          emailsJson = await emailsRes.json();
+          emailsJson = await emailsRes.json()
         }
       }
 
-      setEmails(emailsJson);
+      setEmails(emailsJson)
     } catch (err) {
-      console.error("Failed to fetch dashboard data:", err);
+      console.error('Failed to fetch dashboard data:', err)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchDashboardData();
-  }, []);
+    fetchDashboardData()
+  }, [])
 
   const filteredEmails = emails.filter((e) => {
-    if (filter === "high" && e.priority !== "High") return false;
+    if (filter === 'high' && e.priority !== 'High') return false
     if (searchTerm) {
-      const q = searchTerm.toLowerCase();
+      const q = searchTerm.toLowerCase()
       return (
         (e.sender && e.sender.toLowerCase().includes(q)) ||
         (e.subject && e.subject.toLowerCase().includes(q)) ||
         (e.summary && e.summary.toLowerCase().includes(q))
-      );
+      )
     }
-    return true;
-  });
+    return true
+  })
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold">Inbox</h1>
-          <p className="text-sm text-muted-foreground">
-            Live email sync from Gmail API
-          </p>
+          <p className="text-sm text-muted-foreground">Live email sync from Gmail API</p>
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -120,7 +116,7 @@ export default function Dashboard() {
             disabled={loading}
             className="gap-1.5"
           >
-            <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} /> Refresh
+            <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} /> Refresh
           </Button>
           <Link
             href="/command"
@@ -132,10 +128,26 @@ export default function Dashboard() {
       </div>
 
       <div className="grid gap-3 md:grid-cols-4">
-        <Stat label="Total Emails" value={summary.total_emails || emails.length} icon={<Mail className="h-4 w-4" />} />
-        <Stat label="High Priority" value={summary.high_priority} icon={<AlertCircle className="h-4 w-4 text-destructive" />} />
-        <Stat label="Unread / Synced" value={summary.unread || emails.length} icon={<Zap className="h-4 w-4 text-accent" />} />
-        <Stat label="Live Inbox Items" value={emails.length} icon={<Circle className="h-4 w-4" />} />
+        <Stat
+          label="Total Emails"
+          value={summary.total_emails || emails.length}
+          icon={<Mail className="h-4 w-4" />}
+        />
+        <Stat
+          label="High Priority"
+          value={summary.high_priority}
+          icon={<AlertCircle className="h-4 w-4 text-destructive" />}
+        />
+        <Stat
+          label="Unread / Synced"
+          value={summary.unread || emails.length}
+          icon={<Zap className="h-4 w-4 text-accent" />}
+        />
+        <Stat
+          label="Live Inbox Items"
+          value={emails.length}
+          icon={<Circle className="h-4 w-4" />}
+        />
       </div>
 
       <div className="flex items-center gap-2">
@@ -149,16 +161,16 @@ export default function Dashboard() {
           />
         </div>
         <Button
-          variant={filter === "all" ? "default" : "outline"}
+          variant={filter === 'all' ? 'default' : 'outline'}
           size="sm"
-          onClick={() => setFilter("all")}
+          onClick={() => setFilter('all')}
         >
           All ({emails.length})
         </Button>
         <Button
-          variant={filter === "high" ? "default" : "outline"}
+          variant={filter === 'high' ? 'default' : 'outline'}
           size="sm"
-          onClick={() => setFilter("high")}
+          onClick={() => setFilter('high')}
         >
           High priority
         </Button>
@@ -171,7 +183,8 @@ export default function Dashboard() {
           </div>
         ) : filteredEmails.length === 0 ? (
           <div className="p-8 text-center text-sm text-muted-foreground">
-            No fetched emails found. Click "Command Aether" or issue an email search command to sync your Gmail.
+            No fetched emails found. Click "Command Aether" or issue an email search command to sync
+            your Gmail.
           </div>
         ) : (
           filteredEmails.map((e) => (
@@ -184,23 +197,30 @@ export default function Dashboard() {
                 <div className="flex items-center gap-2">
                   <span className="truncate text-sm font-medium">{e.sender}</span>
                   <Badge variant="outline" className="text-[10px]">
-                    {e.category || "General"}
+                    {e.category || 'General'}
                   </Badge>
                   <Badge
                     className={`text-[10px] ${
-                      e.priority === "High"
-                        ? "bg-destructive/20 text-destructive border-destructive/30"
-                        : "bg-accent/20 text-accent border-accent/30"
+                      e.priority === 'High'
+                        ? 'bg-destructive/20 text-destructive border-destructive/30'
+                        : 'bg-accent/20 text-accent border-accent/30'
                     }`}
                     variant="outline"
                   >
-                    {e.priority || "Medium"}
+                    {e.priority || 'Medium'}
                   </Badge>
                   <span className="ml-auto text-xs text-muted-foreground">
-                    {e.received_at ? new Date(e.received_at).toLocaleString([], { dateStyle: "short", timeStyle: "short" }) : ""}
+                    {e.received_at
+                      ? new Date(e.received_at).toLocaleString([], {
+                          dateStyle: 'short',
+                          timeStyle: 'short',
+                        })
+                      : ''}
                   </span>
                 </div>
-                <div className="mt-0.5 truncate text-sm font-medium">{e.subject || "(no subject)"}</div>
+                <div className="mt-0.5 truncate text-sm font-medium">
+                  {e.subject || '(no subject)'}
+                </div>
                 {e.summary && (
                   <div className="mt-0.5 truncate text-xs text-muted-foreground">
                     <span className="text-primary font-medium">Summary:</span> {e.summary}
@@ -212,7 +232,7 @@ export default function Dashboard() {
         )}
       </Card>
     </div>
-  );
+  )
 }
 
 function Stat({ label, value, icon }: { label: string; value: number; icon: React.ReactNode }) {
@@ -224,5 +244,5 @@ function Stat({ label, value, icon }: { label: string; value: number; icon: Reac
       </div>
       <div className="mt-2 text-2xl font-semibold">{value}</div>
     </Card>
-  );
+  )
 }
