@@ -34,12 +34,17 @@
 
 Built for knowledge workers, founders, sales teams, and executive assistants who want the speed of AI automation without losing control.
 
+![alt text](<./Media/Hero.png>)
+
 <p align="center">
   <a href="apps/api/README.md">
     <img src="https://img.shields.io/badge/📖_API_Docs-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="API Docs"/>
   </a>
   <a href="apps/web/README.md">
     <img src="https://img.shields.io/badge/🌐_Web_Docs-000000?style=for-the-badge&logo=next.js&logoColor=white" alt="Web Docs"/>
+  </a>
+  <a href="apps/extension/README.md">
+    <img src="https://img.shields.io/badge/🌐_Extension_Docs-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Extension Docs"/>
   </a>
 </p>
 
@@ -48,50 +53,60 @@ Built for knowledge workers, founders, sales teams, and executive assistants who
 ## Features
 
 ### AI Command Center
+
 - **Unified input surface** — voice or text, routes to the right AI agent
 - **Supervisor Agent** — intent classification, multi-step task decomposition, coreference resolution
 - **Real-time conversation** — persistent context across turns, multi-turn edit loops
 
 ### Inbox Intelligence
+
 - **Automatic triage** — new emails are fetched, summarized, prioritized, and categorized silently
 - **Smart email viewer** — thread summaries, key action items, detected deadlines
 - **Natural language search** — plain-English queries translated to Gmail search syntax
 
 ### AI Reply Assistant
+
 - **Context-aware drafts** — grounded in thread history + Knowledge Base + Playbooks
 - **Iterative editing** — "shorten it," "make it warmer," "add a calendar link"
 - **Approval gate** — no email is ever sent without explicit user confirmation
 
 ### Calendar Agent
+
 - **Natural language scheduling** — extract dates, times, participants from email or command
 - **Availability checking** — free/busy across participants, ranked candidate slots
 - **Google Meet integration** — auto-generated meet links with every event proposal
 
 ### Knowledge Base (RAG)
+
 - **Company Memory** — upload PDFs, DOCX, TXT, Markdown; auto-chunked, embedded, and stored in Qdrant
 - **Semantic search** — queries retrieve relevant facts with source citations
 - **Access control** — document-level permissions enforced at query time
 
 ### Market Research Agent
+
 - **On-demand company research** — web search + crawling across Tavily, Firecrawl, Serper
 - **Structured reports** — Executive Summary, SWOT, Competitors, Opportunities, Risks
 - **Per-claim timestamps** — recency of each data point is transparent
 
 ### Playbooks
+
 - **Templated reply workflows** — Interview Workflow, Sales Workflow, Customer Support, etc.
 - **Automatic scenario matching** — Playbook structure/tone applied when relevant
 
 ### Voice Interface
+
 - **ElevenLabs STT/TTS** — low-latency streaming speech transcription and natural voice synthesis
 - **Conversational rewrite** — structured results rephrased as natural spoken sentences
 - **Tone adaptation** — casual for daily triage, careful for approvals, calm for fraud/suspicious
 
 ### Chrome Extension
+
 - **Side panel** — access Aether from any browser tab
 - **Cross-device** — independent session context, shared user data
 - **Same backend** — zero backend changes needed
 
 ### Approval Gate
+
 - **Hard enforcement** — send/schedule/pay actions require explicit approval record
 - **Backend-enforced** — not just a UI convention; API routers validate approvals
 - **Audit trail** — every consequential action logged with approval metadata
@@ -102,94 +117,94 @@ Built for knowledge workers, founders, sales teams, and executive assistants who
 
 ### Frontend
 
-| Technology | Purpose |
-|---|---|
-| Next.js 16 (App Router) | React framework |
-| React 19 | UI library |
-| TypeScript | Type safety |
-| Tailwind CSS 4 | Styling |
-| shadcn/ui | Component primitives |
-| Framer Motion | Animations |
-| TanStack Query | Server state management |
-| Zustand | Client state management |
-| React Hook Form + Zod | Forms and validation |
-| Lucide React | Icons |
-| Recharts | Charts |
+| Technology              | Purpose                 |
+| ----------------------- | ----------------------- |
+| Next.js 16 (App Router) | React framework         |
+| React 19                | UI library              |
+| TypeScript              | Type safety             |
+| Tailwind CSS 4          | Styling                 |
+| shadcn/ui               | Component primitives    |
+| Framer Motion           | Animations              |
+| TanStack Query          | Server state management |
+| Zustand                 | Client state management |
+| React Hook Form + Zod   | Forms and validation    |
+| Lucide React            | Icons                   |
+| Recharts                | Charts                  |
 
 ### Backend
 
-| Technology | Purpose |
-|---|---|
-| FastAPI | REST API framework |
-| Python 3.12+ | Backend language |
-| Uvicorn | ASGI server |
-| SQLAlchemy Async | ORM |
-| Alembic | Database migrations |
-| Celery | Background job processing |
-| Redis | Caching, queues, session store |
-| WebSockets | Real-time dashboard updates |
-| PostgreSQL | Primary database |
-| Qdrant | Vector database |
+| Technology       | Purpose                        |
+| ---------------- | ------------------------------ |
+| FastAPI          | REST API framework             |
+| Python 3.12+     | Backend language               |
+| Uvicorn          | ASGI server                    |
+| SQLAlchemy Async | ORM                            |
+| Alembic          | Database migrations            |
+| Celery           | Background job processing      |
+| Redis            | Caching, queues, session store |
+| WebSockets       | Real-time dashboard updates    |
+| PostgreSQL       | Primary database               |
+| Qdrant           | Vector database                |
 
 ### AI & Agents
 
-| Technology | Purpose |
-|---|---|
-| LangGraph | Multi-agent orchestration (state graph) |
-| LangChain | Tool calling and RAG |
-| LangSmith | Observability and debugging |
-| GPT-5.5 / OpenRouter | Primary reasoning model (provider-agnostic) |
-| Groq (Llama 3.3 70B) | Fallback LLM provider |
-| Gemini 2.5 Flash | Fallback LLM provider |
-| OpenAI text-embedding-3-large | Embedding generation |
-| Unstructured / PyMuPDF / DOCX Parser | Document parsing |
+| Technology                           | Purpose                                     |
+| ------------------------------------ | ------------------------------------------- |
+| LangGraph                            | Multi-agent orchestration (state graph)     |
+| LangChain                            | Tool calling and RAG                        |
+| LangSmith                            | Observability and debugging                 |
+| GPT-5.5 / OpenRouter                 | Primary reasoning model (provider-agnostic) |
+| Groq (Llama 3.3 70B)                 | Fallback LLM provider                       |
+| Gemini 2.5 Flash                     | Fallback LLM provider                       |
+| OpenAI text-embedding-3-large        | Embedding generation                        |
+| Unstructured / PyMuPDF / DOCX Parser | Document parsing                            |
 
 ### Voice
 
-| Technology | Purpose |
-|---|---|
-| ElevenLabs Speech-to-Text | Voice transcription |
+| Technology                | Purpose                 |
+| ------------------------- | ----------------------- |
+| ElevenLabs Speech-to-Text | Voice transcription     |
 | ElevenLabs Text-to-Speech | Natural voice synthesis |
 
 ### Authentication & Integrations
 
-| Technology | Purpose |
-|---|---|
-| Clerk | User identity, session management, JWT |
-| Google OAuth 2.0 | Gmail/Calendar/Meet API access (separate from auth) |
-| Gmail API | Read, send, search, draft emails |
-| Google Calendar API | Read calendar, check availability, create events |
-| Google Meet API | Video conference link generation |
+| Technology          | Purpose                                             |
+| ------------------- | --------------------------------------------------- |
+| Clerk               | User identity, session management, JWT              |
+| Google OAuth 2.0    | Gmail/Calendar/Meet API access (separate from auth) |
+| Gmail API           | Read, send, search, draft emails                    |
+| Google Calendar API | Read calendar, check availability, create events    |
+| Google Meet API     | Video conference link generation                    |
 
 ### Search & Research
 
-| Technology | Purpose |
-|---|---|
-| Tavily | Web search (Market Research Agent) |
-| Firecrawl | Web crawling and structured extraction |
-| Brave Search / Serper | Web search provider |
+| Technology            | Purpose                                |
+| --------------------- | -------------------------------------- |
+| Tavily                | Web search (Market Research Agent)     |
+| Firecrawl             | Web crawling and structured extraction |
+| Brave Search / Serper | Web search provider                    |
 
 ### Infrastructure
 
-| Technology | Purpose |
-|---|---|
-| Docker | Containerization |
-| Docker Compose | Local development (Postgres, Redis, Qdrant) |
-| Turborepo | Monorepo orchestration |
-| pnpm | Package manager |
-| Sentry | Error tracking |
-| Vercel | Frontend deployment target |
-| Google Cloud Run | Backend deployment target |
+| Technology       | Purpose                                     |
+| ---------------- | ------------------------------------------- |
+| Docker           | Containerization                            |
+| Docker Compose   | Local development (Postgres, Redis, Qdrant) |
+| Turborepo        | Monorepo orchestration                      |
+| pnpm             | Package manager                             |
+| Sentry           | Error tracking                              |
+| Vercel           | Frontend deployment target                  |
+| Google Cloud Run | Backend deployment target                   |
 
 ### Dev Tools
 
-| Technology | Purpose |
-|---|---|
-| Prettier | Code formatting |
-| ESLint | Linting |
-| EditorConfig | Editor consistency |
-| Pydantic | Data validation (backend) |
-| Tenacity | Retry/backoff for external API calls |
+| Technology   | Purpose                              |
+| ------------ | ------------------------------------ |
+| Prettier     | Code formatting                      |
+| ESLint       | Linting                              |
+| EditorConfig | Editor consistency                   |
+| Pydantic     | Data validation (backend)            |
+| Tenacity     | Retry/backoff for external API calls |
 
 ---
 
@@ -345,6 +360,7 @@ flowchart LR
 7. **Agent terminates** — only Supervisor persists across turns
 
 ### Automatic Flow (only 4 things)
+
 - **Fetch** new email via Gmail Pub/Sub webhook
 - **Summarize** body into 1–2 sentences via LLM
 - **Prioritize** as High/Medium/Low
@@ -436,12 +452,12 @@ aether/
 ### Daily Triage Flow
 
 1. User opens the app → Dashboard shows new email count, high-priority count, categories
-2. User says: *"Read me the high-priority ones"*
+2. User says: _"Read me the high-priority ones"_
 3. Inbox Agent surfaces 3 emails with AI summaries; TTS reads them aloud
-4. User says: *"Reply to the investor one, keep it warm but concise"*
+4. User says: _"Reply to the investor one, keep it warm but concise"_
 5. Reply Agent drafts an email grounded in Knowledge Base + thread context + matching Playbook
-6. User reviews, says *"shorten it"*, reviews again
-7. User says *"send it"* → confirmation screen → user approves → email sent via Gmail API
+6. User reviews, says _"shorten it"_, reviews again
+7. User says _"send it"_ → confirmation screen → user approves → email sent via Gmail API
 8. Total elapsed time: ~3 minutes
 
 ### First-Time Setup
@@ -449,7 +465,7 @@ aether/
 1. Sign in via Clerk (email/password, Google social login, or magic link)
 2. Connect Google account (Gmail + Calendar scopes) — separate from login, happens in Settings
 3. Dashboard loads with async historical inbox backfill
-4. Guided tutorial: *"Try saying: show me my unread emails"*
+4. Guided tutorial: _"Try saying: show me my unread emails"_
 
 ### Context Resolution
 
@@ -524,66 +540,66 @@ cd apps/web && pnpm dev                    # Frontend on :3000
 
 ## Environment Variables
 
-| Variable | Purpose | Required | Default |
-|---|---|---|---|
-| `DATABASE_URL` | PostgreSQL connection string | Yes | `postgresql+asyncpg://postgres:postgres@localhost:5432/ai_email_assistant` |
-| `REDIS_URL` | Redis connection string | Yes | `redis://localhost:6379/0` |
-| `QDRANT_URL` | Qdrant vector DB URL | Yes | `http://localhost:6333` |
-| `OPENAI_API_KEY` | Primary LLM provider API key | Yes | — |
-| `GROQ_API_KEY` | Fallback LLM provider | No | — |
-| `GEMINI_API_KEY` | Fallback LLM provider | No | — |
-| `LLM_FALLBACK_ORDER` | Provider priority order | No | `openrouter,groq,gemini` |
-| `ELEVENLABS_API_KEY` | Voice STT/TTS | Yes | — |
-| `GOOGLE_OAUTH_CLIENT_ID` | Google API integration OAuth | Yes | — |
-| `GOOGLE_OAUTH_CLIENT_SECRET` | Google API integration OAuth | Yes | — |
-| `CLERK_SECRET_KEY` | Clerk backend auth | Yes | — |
-| `CLERK_PUBLISHABLE_KEY` | Clerk frontend auth | Yes | — |
-| `CLERK_WEBHOOK_SIGNING_SECRET` | Clerk webhook verification | Yes | — |
-| `JWT_SECRET` | Token encryption key | Yes | — |
-| `TAVILY_API_KEY` | Web search (Research Agent) | No | — |
-| `FIRECRAWL_API_KEY` | Web crawling (Research Agent) | No | — |
-| `SERPER_API_KEY` | Web search (Research Agent) | No | — |
-| `SENTRY_DSN` | Error tracking (backend) | No | — |
-| `LANGSMITH_API_KEY` | LangSmith observability | No | — |
-| `NEXT_PUBLIC_API_URL` | Frontend → Backend API URL | Yes | `http://localhost:8000` |
-| `NEXT_PUBLIC_WS_URL` | Frontend → Backend WebSocket URL | Yes | `ws://localhost:8000/ws` |
-| `NEXT_PUBLIC_SENTRY_DSN` | Error tracking (frontend) | No | — |
+| Variable                       | Purpose                          | Required | Default                                                                    |
+| ------------------------------ | -------------------------------- | -------- | -------------------------------------------------------------------------- |
+| `DATABASE_URL`                 | PostgreSQL connection string     | Yes      | `postgresql+asyncpg://postgres:postgres@localhost:5432/ai_email_assistant` |
+| `REDIS_URL`                    | Redis connection string          | Yes      | `redis://localhost:6379/0`                                                 |
+| `QDRANT_URL`                   | Qdrant vector DB URL             | Yes      | `http://localhost:6333`                                                    |
+| `OPENAI_API_KEY`               | Primary LLM provider API key     | Yes      | —                                                                          |
+| `GROQ_API_KEY`                 | Fallback LLM provider            | No       | —                                                                          |
+| `GEMINI_API_KEY`               | Fallback LLM provider            | No       | —                                                                          |
+| `LLM_FALLBACK_ORDER`           | Provider priority order          | No       | `openrouter,groq,gemini`                                                   |
+| `ELEVENLABS_API_KEY`           | Voice STT/TTS                    | Yes      | —                                                                          |
+| `GOOGLE_OAUTH_CLIENT_ID`       | Google API integration OAuth     | Yes      | —                                                                          |
+| `GOOGLE_OAUTH_CLIENT_SECRET`   | Google API integration OAuth     | Yes      | —                                                                          |
+| `CLERK_SECRET_KEY`             | Clerk backend auth               | Yes      | —                                                                          |
+| `CLERK_PUBLISHABLE_KEY`        | Clerk frontend auth              | Yes      | —                                                                          |
+| `CLERK_WEBHOOK_SIGNING_SECRET` | Clerk webhook verification       | Yes      | —                                                                          |
+| `JWT_SECRET`                   | Token encryption key             | Yes      | —                                                                          |
+| `TAVILY_API_KEY`               | Web search (Research Agent)      | No       | —                                                                          |
+| `FIRECRAWL_API_KEY`            | Web crawling (Research Agent)    | No       | —                                                                          |
+| `SERPER_API_KEY`               | Web search (Research Agent)      | No       | —                                                                          |
+| `SENTRY_DSN`                   | Error tracking (backend)         | No       | —                                                                          |
+| `LANGSMITH_API_KEY`            | LangSmith observability          | No       | —                                                                          |
+| `NEXT_PUBLIC_API_URL`          | Frontend → Backend API URL       | Yes      | `http://localhost:8000`                                                    |
+| `NEXT_PUBLIC_WS_URL`           | Frontend → Backend WebSocket URL | Yes      | `ws://localhost:8000/ws`                                                   |
+| `NEXT_PUBLIC_SENTRY_DSN`       | Error tracking (frontend)        | No       | —                                                                          |
 
 ---
 
 ## Available Scripts
 
-| Script | Description |
-|---|---|
-| `pnpm dev` | Start all apps in development mode (via Turborepo) |
-| `pnpm build` | Build all apps for production |
-| `pnpm lint` | Run ESLint across the workspace |
-| `pnpm format` | Format code with Prettier |
-| `pnpm clean` | Clean build artifacts |
+| Script        | Description                                        |
+| ------------- | -------------------------------------------------- |
+| `pnpm dev`    | Start all apps in development mode (via Turborepo) |
+| `pnpm build`  | Build all apps for production                      |
+| `pnpm lint`   | Run ESLint across the workspace                    |
+| `pnpm format` | Format code with Prettier                          |
+| `pnpm clean`  | Clean build artifacts                              |
 
 ### Backend (apps/api)
 
-| Script | Description |
-|---|---|
+| Script                      | Description              |
+| --------------------------- | ------------------------ |
 | `uvicorn main:app --reload` | Start FastAPI dev server |
-| `alembic upgrade head` | Run database migrations |
-| `python -m pytest` | Run backend tests |
+| `alembic upgrade head`      | Run database migrations  |
+| `python -m pytest`          | Run backend tests        |
 
 ### Frontend (apps/web)
 
-| Script | Description |
-|---|---|
-| `pnpm dev` | Start Next.js dev server |
-| `pnpm build` | Build for production |
-| `pnpm start` | Start production server |
+| Script       | Description              |
+| ------------ | ------------------------ |
+| `pnpm dev`   | Start Next.js dev server |
+| `pnpm build` | Build for production     |
+| `pnpm start` | Start production server  |
 
 ### Extension (apps/extension)
 
-| Script | Description |
-|---|---|
-| `pnpm dev` | Start Vite dev server |
-| `pnpm build` | Build extension for Chrome |
-| `pnpm preview` | Preview production build |
+| Script         | Description                |
+| -------------- | -------------------------- |
+| `pnpm dev`     | Start Vite dev server      |
+| `pnpm build`   | Build extension for Chrome |
+| `pnpm preview` | Preview production build   |
 
 ---
 
@@ -592,15 +608,18 @@ cd apps/web && pnpm dev                    # Frontend on :3000
 Key API endpoints (grouped by feature):
 
 ### Command Center
+
 - `POST /command` — Execute a text command through the Supervisor Agent
 - `POST /command/voice` — Execute a voice command (audio upload → STT → Supervisor)
 
 ### Inbox
+
 - `GET /inbox/emails` — List indexed emails (prioritized, categorized)
 - `GET /inbox/search` — Natural language search (translated to Gmail query)
 - `GET /inbox/recent` — Sync and fetch recent emails from Gmail API
 
 ### Replies
+
 - `POST /replies/drafts` — Generate a reply draft for a given email
 - `GET /replies/drafts` — List active drafts
 - `POST /replies/drafts/{id}/edit` — Edit a draft with instructions
@@ -608,6 +627,7 @@ Key API endpoints (grouped by feature):
 - `POST /replies/drafts/{id}/send` — Execute send (requires valid approval)
 
 ### Calendar
+
 - `POST /calendar/extract` — Extract meeting details from natural language
 - `POST /calendar/availability` — Check free/busy slots across participants
 - `POST /calendar/preview` — Create meeting proposal preview
@@ -615,21 +635,26 @@ Key API endpoints (grouped by feature):
 - `GET /calendar/meetings` — List meeting proposals
 
 ### Dashboard
+
 - `GET /dashboard/summary` — Aggregate inbox stats (total, high priority, pending approvals)
 
 ### Knowledge Base
+
 - `POST /knowledge/query` — Semantic search across Company Memory
 - `POST /knowledge/documents` — Upload a document for indexing
 
 ### Integrations
+
 - `GET /integrations/google/status` — Check Google connection status
 - `GET /integrations/google/connect` — Start Google OAuth flow
 - `DELETE /integrations/google` — Disconnect Google integration
 
 ### WebSocket
+
 - `GET /ws` — Real-time dashboard updates (new emails, draft changes, approvals)
 
 ### Webhooks
+
 - `POST /webhooks/clerk` — Clerk user lifecycle events (created/updated/deleted)
 - `POST /webhooks/gmail` — Gmail Pub/Sub push notifications for new emails
 
@@ -641,29 +666,29 @@ Key API endpoints (grouped by feature):
 
 **Main entities:**
 
-| Entity | Description |
-|---|---|
-| `users` | User identity, linked to Clerk |
-| `google_integrations` | Per-user Google OAuth tokens (encrypted at rest) |
-| `email_metadata` | Categorized/summarized email metadata (idempotency keyed by Gmail message ID) |
-| `threads` | Email thread summaries |
-| `drafts` | AI-generated drafts with version history (JSONB) |
-| `meetings` | Calendar meeting proposals and confirmations |
-| `knowledge_documents` | Uploaded document tracking and indexing status |
-| `playbooks` | Reusable reply templates |
-| `vip_contacts` | User-designated priority contacts |
-| `agent_logs` | Audit trail for all agent actions and approvals |
-| `conversation_context` | Durable backstop for session context |
+| Entity                 | Description                                                                   |
+| ---------------------- | ----------------------------------------------------------------------------- |
+| `users`                | User identity, linked to Clerk                                                |
+| `google_integrations`  | Per-user Google OAuth tokens (encrypted at rest)                              |
+| `email_metadata`       | Categorized/summarized email metadata (idempotency keyed by Gmail message ID) |
+| `threads`              | Email thread summaries                                                        |
+| `drafts`               | AI-generated drafts with version history (JSONB)                              |
+| `meetings`             | Calendar meeting proposals and confirmations                                  |
+| `knowledge_documents`  | Uploaded document tracking and indexing status                                |
+| `playbooks`            | Reusable reply templates                                                      |
+| `vip_contacts`         | User-designated priority contacts                                             |
+| `agent_logs`           | Audit trail for all agent actions and approvals                               |
+| `conversation_context` | Durable backstop for session context                                          |
 
 **Row-level security (RLS)** is enabled on all user-scoped tables as defense-in-depth against cross-tenant data access.
 
 ### Qdrant (Vector Store)
 
-| Collection | Purpose |
-|---|---|
+| Collection       | Purpose                                              |
+| ---------------- | ---------------------------------------------------- |
 | `company_memory` | Document chunks for RAG (per-org, access-controlled) |
-| `research_cache` | Cached market research reports (TTL-based) |
-| `support_kb` | Product documentation for the Support Agent |
+| `research_cache` | Cached market research reports (TTL-based)           |
+| `support_kb`     | Product documentation for the Support Agent          |
 
 ### Redis (Cache & Ephemeral State)
 
@@ -678,10 +703,10 @@ Key API endpoints (grouped by feature):
 
 Aether uses **Clerk** for user identity and session management. Google OAuth 2.0 is used **only** as a per-user integration connection (Gmail/Calendar API access) — it is not used for login. These are two independent concerns:
 
-| Layer | Provider | Purpose |
-|---|---|---|
-| Login / Identity | Clerk | Who you are, session management |
-| Integration | Google OAuth 2.0 | Gmail/Calendar/Meet API access |
+| Layer            | Provider         | Purpose                         |
+| ---------------- | ---------------- | ------------------------------- |
+| Login / Identity | Clerk            | Who you are, session management |
+| Integration      | Google OAuth 2.0 | Gmail/Calendar/Meet API access  |
 
 - Clerk handles sign-in, sign-up, session refresh, MFA, and social login
 - Google integration is established post-login via Settings → Integrations
@@ -705,20 +730,21 @@ Aether uses **Clerk** for user identity and session management. Google OAuth 2.0
 
 The system uses a **Supervisor Agent** (always running) that orchestrates **specialized agents** (instantiated on-demand, terminate after response):
 
-| Agent | Responsibility | Lifecycle |
-|---|---|---|
-| **Supervisor** | Intent classification, context management, orchestration | Persistent per session |
-| **Inbox Agent** | Email sync, summarization, search, read | Auto-pipeline (continuous) + on-demand |
-| **Reply Agent** | Draft generation, editing, send | Per reply session (multi-turn) |
-| **Calendar Agent** | Meeting scheduling, availability | Per scheduling session |
-| **Knowledge Agent** | RAG retrieval, Company Memory query | Per query (stateless) |
-| **Research Agent** | Web research, structured reports | Per research command |
-| **Support Agent** | Product help, onboarding | Per help request |
-| **Payment Agent** | (Future — scaffolded) | Per payment workflow |
+| Agent               | Responsibility                                           | Lifecycle                              |
+| ------------------- | -------------------------------------------------------- | -------------------------------------- |
+| **Supervisor**      | Intent classification, context management, orchestration | Persistent per session                 |
+| **Inbox Agent**     | Email sync, summarization, search, read                  | Auto-pipeline (continuous) + on-demand |
+| **Reply Agent**     | Draft generation, editing, send                          | Per reply session (multi-turn)         |
+| **Calendar Agent**  | Meeting scheduling, availability                         | Per scheduling session                 |
+| **Knowledge Agent** | RAG retrieval, Company Memory query                      | Per query (stateless)                  |
+| **Research Agent**  | Web research, structured reports                         | Per research command                   |
+| **Support Agent**   | Product help, onboarding                                 | Per help request                       |
+| **Payment Agent**   | (Future — scaffolded)                                    | Per payment workflow                   |
 
 ### Agent Communication Contract
 
 All agents communicate via a standard envelope:
+
 ```json
 {
   "agent": "reply_agent",
@@ -737,6 +763,7 @@ All agents communicate via a standard envelope:
 ### LLM Provider Failover
 
 The system supports multiple LLM providers with automatic fallback:
+
 - Default order: `openrouter` → `groq` → `gemini`
 - Configured via `LLM_FALLBACK_ORDER` environment variable
 - If one provider fails, the next in line is tried automatically
@@ -748,12 +775,12 @@ The system supports multiple LLM providers with automatic fallback:
 
 Celery workers handle asynchronous processing:
 
-| Worker | Purpose |
-|---|---|
-| `email_processor` | Processes new email notifications from Gmail Pub/Sub (fetch → summarize → categorize → store) |
-| `kb_indexer` | Indexes uploaded documents (parse → chunk → embed → store in Qdrant) |
-| `research_cache_refresh` | Periodic cache cleanup for stale research reports |
-| `invoice_scanner` | (Scaffolded) Background invoice detection for future Payment Agent |
+| Worker                   | Purpose                                                                                       |
+| ------------------------ | --------------------------------------------------------------------------------------------- |
+| `email_processor`        | Processes new email notifications from Gmail Pub/Sub (fetch → summarize → categorize → store) |
+| `kb_indexer`             | Indexes uploaded documents (parse → chunk → embed → store in Qdrant)                          |
+| `research_cache_refresh` | Periodic cache cleanup for stale research reports                                             |
+| `invoice_scanner`        | (Scaffolded) Background invoice detection for future Payment Agent                            |
 
 ---
 
@@ -776,6 +803,7 @@ docker-compose up -d
 ### CI/CD
 
 Configuration for GitHub Actions is outlined in the project documentation:
+
 - `deploy-api.yml` — Build and deploy backend to Cloud Run
 - `deploy-web.yml` — Build and deploy frontend to Vercel
 - `run-tests.yml` — Run test suite on PRs
@@ -855,16 +883,16 @@ Configuration for GitHub Actions is outlined in the project documentation:
 
 ## Troubleshooting
 
-| Issue | Solution |
-|---|---|
-| `Clerk secret key not configured` | Set `CLERK_SECRET_KEY`, `CLERK_PUBLISHABLE_KEY`, `CLERK_WEBHOOK_SIGNING_SECRET` in `.env` |
-| `Google integration not connected` | Go to Settings → Integrations → Connect Google |
-| `No emails appearing` | Issue a command like "show my recent emails" to trigger Gmail sync |
-| `LLM call fails` | Check `OPENAI_API_KEY` (or `GROQ_API_KEY`/`GEMINI_API_KEY`); verify `LLM_FALLBACK_ORDER` |
-| `Database migration fails` | Run `alembic upgrade head` from `apps/api/` |
-| `Extension won't load` | Build with `pnpm build` in `apps/extension/`, load unpacked from `dist/` |
-| `Voice not working` | Verify `ELEVENLABS_API_KEY` and microphone permissions |
-| `Qdrant connection refused` | Ensure Docker Compose is running: `docker-compose up -d` |
+| Issue                              | Solution                                                                                  |
+| ---------------------------------- | ----------------------------------------------------------------------------------------- |
+| `Clerk secret key not configured`  | Set `CLERK_SECRET_KEY`, `CLERK_PUBLISHABLE_KEY`, `CLERK_WEBHOOK_SIGNING_SECRET` in `.env` |
+| `Google integration not connected` | Go to Settings → Integrations → Connect Google                                            |
+| `No emails appearing`              | Issue a command like "show my recent emails" to trigger Gmail sync                        |
+| `LLM call fails`                   | Check `OPENAI_API_KEY` (or `GROQ_API_KEY`/`GEMINI_API_KEY`); verify `LLM_FALLBACK_ORDER`  |
+| `Database migration fails`         | Run `alembic upgrade head` from `apps/api/`                                               |
+| `Extension won't load`             | Build with `pnpm build` in `apps/extension/`, load unpacked from `dist/`                  |
+| `Voice not working`                | Verify `ELEVENLABS_API_KEY` and microphone permissions                                    |
+| `Qdrant connection refused`        | Ensure Docker Compose is running: `docker-compose up -d`                                  |
 
 ---
 
