@@ -1,4 +1,6 @@
-# Aether — AI-native Executive Agentic Workflow System for Your Inbox
+# Aether — AI-native Executive Agentic Workflow System
+
+<p align="center"><em>One Command, an Army of AI Agents⚡</em></p>
 
 <p align="center">
   <img src="./Media/AetherLogo.png" alt="Aether Logo" width="550"/>
@@ -34,7 +36,7 @@
 
 Built for knowledge workers, founders, sales teams, and executive assistants who want the speed of AI automation without losing control.
 
-![alt text](<./Media/Hero.png>)
+![alt text](./Media/Hero.png)
 
 <p align="center">
   <a href="apps/api/README.md">
