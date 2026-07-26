@@ -1,10 +1,5 @@
-"use client"
-
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
+import { Card, Input, Label, Switch, Button } from '@aetheros/ui'
+;('use client')
 
 export default function GeneralSettings() {
   return (
@@ -29,13 +24,15 @@ export default function GeneralSettings() {
           Only silent work runs automatically. Sending, scheduling, and payments are always gated.
         </p>
         <div className="mt-4 space-y-3">
-          {([
-            ["Auto-summarize new email", true],
-            ["Auto-categorize (investor / customer / team…)", true],
-            ["Auto-priority scoring", true],
-            ["Auto-labeling in Gmail", true],
-            ["Auto-draft replies (kept as drafts, never sent)", false],
-          ] as const).map(([label, on]) => (
+          {(
+            [
+              ['Auto-summarize new email', true],
+              ['Auto-categorize (investor / customer / team…)', true],
+              ['Auto-priority scoring', true],
+              ['Auto-labeling in Gmail', true],
+              ['Auto-draft replies (kept as drafts, never sent)', false],
+            ] as const
+          ).map(([label, on]) => (
             <div key={label} className="flex items-center justify-between">
               <span className="text-sm">{label}</span>
               <Switch defaultChecked={on} />
@@ -48,5 +45,5 @@ export default function GeneralSettings() {
         <Button>Save changes</Button>
       </div>
     </div>
-  );
+  )
 }

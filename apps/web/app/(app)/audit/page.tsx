@@ -1,14 +1,6 @@
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { auditLog } from "@/lib/mock-data";
+import { Card, Badge } from '@aetheros/ui'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@aetheros/ui'
+import { auditLog } from '@/lib/mock-data'
 
 export default function AuditPage() {
   return (
@@ -43,7 +35,7 @@ export default function AuditPage() {
                 <TableCell className="font-mono text-xs">{a.action}</TableCell>
                 <TableCell className="text-sm">{a.target}</TableCell>
                 <TableCell>
-                  <Badge variant={a.approvedBy === "user" ? "default" : "outline"}>
+                  <Badge variant={a.approvedBy === 'user' ? 'default' : 'outline'}>
                     {a.approvedBy}
                   </Badge>
                 </TableCell>
@@ -53,5 +45,5 @@ export default function AuditPage() {
         </Table>
       </Card>
     </div>
-  );
+  )
 }
